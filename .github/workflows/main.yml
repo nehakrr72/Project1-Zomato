@@ -266,6 +266,14 @@ jobs:
 
       - name: Update Deployment Image
         run: |
-          sed -i "s|image:.*|image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}|" Kubernetes/deployment.yaml
+          sed -i "s|image:.*|image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}|" Kubernetes/deployment.yml
+
+      - name: Commit and Push Updated Manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Kubernetes/deployment.yml
+          git commit -m "Update image tag to ${{ env.IMAGE_TAG }} [skip ci]" || echo "No changes to commit"
+          git push
 
 
