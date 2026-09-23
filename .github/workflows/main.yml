@@ -269,4 +269,3 @@ jobs:
           sed -i "s|image:.*|image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}|" Kubernetes/deployment.yaml
 
 
-
