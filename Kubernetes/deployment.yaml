@@ -21,6 +21,6 @@ spec:
     spec:
       containers:
         - name: cont1
-          image: nehakrr72/zomato_new:1b3dea63c6a7d30e32105d2fed277dc67bd1a03b
+          image: nehakrr72/zomato_new:64e685aee92939815901ecd56d3c94211c25fc1f
           ports:
             - containerPort: 3000 #we are exposing 3000 n dockerfile.
