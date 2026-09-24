@@ -162,7 +162,7 @@ jobs:
         continue-on-error: true
         run: |
           trivy fs \
-            --format sarif \  
+            --format sarif \
             --output trivy-fs.sarif \
             --severity CRITICAL,HIGH \
             --ignore-unfixed \
