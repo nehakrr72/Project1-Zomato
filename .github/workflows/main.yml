@@ -227,7 +227,7 @@ jobs:
       - name: Verify Docker Image
         run: |
           docker images
-          docker image inspect \ 
+          docker image inspect \
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} 
       #you can seee the inspect details in the worflow run logs.
       # FIX 6: docker/login-action@v4 does not exist — correct version is v3
