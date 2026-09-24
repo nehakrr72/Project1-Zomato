@@ -1,13 +1,17 @@
 FROM node:16-slim AS builder
-WORKDIR /app #set workdir inside the image as /app.
-COPY package*.json ./ #copy package.json and package-lock.json(files sitting in root directory of build context) to the workdir inside the image.
+WORKDIR /app 
+#set workdir inside the image as /app.
+COPY package*.json ./ 
+#copy package.json and package-lock.json(files sitting in root directory of build context) to the workdir inside the image.
 RUN npm install
 COPY . .
-RUN npm run build # build folder will be created inside the workdir /app after this command is executed.
+RUN npm run build 
+# build folder will be created inside the workdir /app after this command is executed.
 
 # Stage 2: Production
 FROM builder AS final
-WORKDIR /app #set workdir inside the image as /app.
+WORKDIR /app 
+#set workdir inside the image as /app.
 COPY --from=builder /app/build ./build
 COPY package*.json ./
 RUN npm install --production
