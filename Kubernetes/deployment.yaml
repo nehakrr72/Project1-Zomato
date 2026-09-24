@@ -21,6 +21,6 @@ spec:
     spec:
       containers:
         - name: cont1
-          image: nehakrr72/zomato_new
+          image: nehakrr72/zomato_new:bfa607406d2fb724d7dbfd01635d262aadb265e9
           ports:
             - containerPort: 8080
