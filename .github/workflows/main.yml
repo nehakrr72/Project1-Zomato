@@ -266,7 +266,7 @@ jobs:
 
       - name: Update Deployment Image
         run: |
-          sed -i "s|image:.*|image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}|" Kubernetes/deployment.yml
+          sed -i "s|image:.*|image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}|" Kubernetes/deployment.yaml
 
       - name: Commit and Push Updated Manifest
         run: |
