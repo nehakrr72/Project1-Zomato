@@ -183,7 +183,7 @@ jobs:
           sarif_file: ./trivy-fs.sarif #file create previously in step run trivy file system scan.
 
       - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0. #This runs Hadolint against your Dockerfile, checking it for bad practices — the Dockerfile equivalent of what ESLint does for your JavaScript.
+        uses: hadolint/hadolint-action@v3.1.0 #This runs Hadolint against your Dockerfile, checking it for bad practices — the Dockerfile equivalent of what ESLint does for your JavaScript.
         with:
           dockerfile: Dockerfile
           failure-threshold: warning
