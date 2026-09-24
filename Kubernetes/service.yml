@@ -5,12 +5,14 @@ metadata:
   name: abc
 
 spec:
-  type: NodePort
+  type: LoadBalancer
 
   selector:
     app: zomato
 
   ports:
-    - port: 8080
-      targetPort: 8080
-      nodePort: 31111
+    - port: 8080 # any value, this is the port in which service listens.
+      targetPort: 3000 #target port is 3000 in dockerfile and deployment.yaml,must match.
+      nodePort: 31111 #Kubernetes only allows NodePort values in the range 30000–32767 by default. This is for servicetype nodeport.
+
+#it opens that port on every node in your cluster, so traffic hitting <any-node-IP>:31111 gets routed to this service, which then forwards to targetPort on a matching pod. If you didn't specify nodePort explicitly, Kubernetes would auto-assign a random one from the 30000–32767 range for you — you set it manually here just to get a predictable, known port instead.

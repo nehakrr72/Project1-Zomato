@@ -13,3 +13,9 @@ updates:
 
   reviewers:
     - nehakrr72 
+
+#On the schedule you set (interval: "weekly"), Dependabot checks the npm registry against your current lockfile.
+#If it finds an outdated or vulnerable dependency, it opens a pull request that bumps that dependency's version in package.json/package-lock.json.
+#Up to open-pull-requests-limit: 10 such PRs can be open at once — after that, it stops opening new ones until you merge or close some.
+#Each PR gets labeled dependencies and security, and its commit message is prefixed with "deps" — purely organizational, so these PRs are visually distinguishable in your PR list from ones representing actual feature work.
+#reviewers: nehakrr72 — auto-requests that GitHub user as a reviewer on every PR Dependabot opens.

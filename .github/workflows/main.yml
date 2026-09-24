@@ -20,7 +20,7 @@ on:
 # ─────────────────────────────────────────────
 # Default Permissions (Least Privilege)
 # ─────────────────────────────────────────────
-permissions:
+permissions: #Permissons granted to the runner.
   contents: read
   security-events: write
   actions: read
@@ -51,10 +51,10 @@ jobs:
   build:
     name: Build React Application
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 20 #maximum time for the job to run,after this github will cancel and mark the job as failed
     defaults:
       run:
-        shell: bash
+        shell: bash #By default for os ubuntu the programming lanuage is bash.
 
     steps:
 
@@ -65,14 +65,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          cache: npm #npm is node js package manager,here we are caching the npm packages to speed up the build process.
 
       - name: Display Versions
         run: |
           node --version
           npm --version
 
-      - name: Restore npm Cache
+      - name: Restore npm Cache #this restores the npm cache from previous builds to speed up the build process.
         uses: actions/cache@v4
         with:
           path: ~/.npm
@@ -81,15 +81,15 @@ jobs:
             ${{ runner.os }}-npm-
 
       # FIX 1: codeql-action v4 does not exist — correct version is v3
-      - name: Initialize CodeQL
+      - name: Initialize CodeQL #setup codeql-action to scan the code for security vulnerabilities and other issues.
         uses: github/codeql-action/init@v3
         with:
           languages: javascript
 
-      - name: Autobuild
+      - name: Autobuild #Build/extract database from source tree for codeql to analyze.
         uses: github/codeql-action/autobuild@v3
 
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL Analysis #checks the created database for security vulnerabilities and other issues(SQL injection, XSS, unsafe eval, etc.)
         uses: github/codeql-action/analyze@v3
 
       - name: Install Dependencies
@@ -98,30 +98,30 @@ jobs:
       - name: Verify Installed Packages
         run: npm ls || true
 
-      - name: Run ESLint
+      - name: Run ESLint #ESLint statically analyzes your JavaScript/TypeScript for style violations and likely mistakes — inconsistent quote style or indentation, unused variables, == instead of ===, missing dependencies in a React etc.
         run: npm run lint
 
       - name: Run Unit Tests
         env:
-          CI: true
+          CI: true #sets an environment variable that many JavaScript tooling libraries specifically check for to change their behavior when running in an automated pipeline versus on a developer's own machine.it is automatiacally added by github.
         run: echo "code is tested"
 
       - name: Upload Coverage Report
-        if: always()
+        if: always() #even if previous steps fail, this step will run to upload the coverage report. 
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage
+          path: coverage #coverage will not get created through this command, it needs to be added in test step, which we are not doing.
 
       - name: Build Application
-        run: npm link
+        run: npm link #It creates a symlink so a local package can be used by other projects on the same machine without publishing it to the npm registry first.
 
       # FIX 2: upload-artifact@v7 does not exist — correct version is v4
       - name: Artifact Upload
         uses: actions/upload-artifact@v4
         with:
           name: artifact-1
-          path: package*
+          path: package* #package is not created as part of this step, it looks for any directory starting with pacakage like package.json, package-lock.json, package-lock.yaml, package.yaml, etc. and uploads them as artifact-1.
 
   # ───────────────────────────────────────────
   # JOB 2: Security & Docker Validation
@@ -141,7 +141,7 @@ jobs:
         uses: actions/checkout@v4
 
       # FIX 3: download-artifact path: package* is invalid — must be a directory path
-      - name: Download React Build
+      - name: Download React Build #pulls down the artifact named artifact-1 (uploaded by the previous job) and extracts it into ., the current working directory of this job.
         uses: actions/download-artifact@v4
         with:
           name: artifact-1
@@ -152,7 +152,7 @@ jobs:
       #   env:
       #     NEW_GITHUB_TOKEN: ${{ secrets.GT }}
 
-      - name: Install Trivy
+      - name: Install Trivy #it checks your project against databases of known security issues, rather than analyzing your code's logic the way CodeQL does.
         uses: aquasecurity/setup-trivy@e07451d2e059ed86c2870430ea286b3a9e0bf241
 
       - name: Verify Trivy
@@ -162,12 +162,12 @@ jobs:
         continue-on-error: true
         run: |
           trivy fs \
-            --format sarif \
+            --format sarif \  
             --output trivy-fs.sarif \
             --severity CRITICAL,HIGH \
             --ignore-unfixed \
             .
-
+      ##sarif it is a standardized JSON file used by the software industry to share security scan results between different tools.
       # FIX 4: "run:" was indented 5 spaces (1 short) — YAML parser rejected it at L159
       - name: Verify SARIF
         run: |
@@ -180,15 +180,15 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ./trivy-fs.sarif
+          sarif_file: ./trivy-fs.sarif #file create previously in step run trivy file system scan.
 
       - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.1.0. #This runs Hadolint against your Dockerfile, checking it for bad practices — the Dockerfile equivalent of what ESLint does for your JavaScript.
         with:
           dockerfile: Dockerfile
           failure-threshold: warning
 
-      - name: Set up Docker Buildx
+      - name: Set up Docker Buildx #buildx is build engine and Buildx needs to be explicitly set up as the active "builder" instance before you can use its extended features.
         uses: docker/setup-buildx-action@v3
 
       - name: Restore Docker Cache
@@ -205,14 +205,14 @@ jobs:
           context: .
           file: Dockerfile
           push: false
-          tags: |
+          tags: | #used for versioning or pull/reference/run a specific build.
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
             ${{ env.IMAGE_NAME }}:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
-          provenance: false
-          load: true
-          labels: |
+          cache-from: type=local,src=/tmp/.buildx-cache #from where to read cache to bildx.
+          cache-to: type=local,dest=/tmp/.buildx-cache-new #where to weite new cache to buildx.
+          provenance: false #disables the build provenance attestation metadata that newer Buildx versions attach by default.
+          load: true #load the result into your local Docker daemon on the runner, so commands like docker images, docker run, docker inspect can see and use it
+          labels: | #metadata attached inside the image itself,purely descriptive.
             org.opencontainers.image.title=Zomato
             org.opencontainers.image.source=${{ github.repository }}
             org.opencontainers.image.version=${{ github.sha }}
@@ -227,9 +227,9 @@ jobs:
       - name: Verify Docker Image
         run: |
           docker images
-          docker image inspect \
-            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-
+          docker image inspect \ 
+            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} 
+      #you can seee the inspect details in the worflow run logs.
       # FIX 6: docker/login-action@v4 does not exist — correct version is v3
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -237,12 +237,12 @@ jobs:
            username: ${{ secrets.DOCKER_USER }}
            password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker Image
+      - name: Push Docker Image #two push because we bilt two tag points.sha tag exits for tracebility and safety, latest for convenience,Two different audiences need two different kinds of reference to the same image.
         run: |
             docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
             docker push ${{ env.IMAGE_NAME }}:latest
 
-      - name: Smoke Test Container
+      - name: Smoke Test Container #test to chceck if image runs and stays alive,docker run -d --name zomato-test -p 3000:3000 image.
         run: |
           docker run -d \
             --name zomato-test \
@@ -250,12 +250,13 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           sleep 20
           docker ps
-          docker logs zomato-test
+          docker logs zomato-test   
 
       - name: Cleanup
         if: always()
         run: docker rm -f zomato-test || true
-  
+  #docker logs- prints whatever the container's process has written to stdout/stderr so far, letting you see application startup output (or an error/stack trace, if something went wrong) directly in the CI log.
+  #docker ps-lists currently running containers.
   Kubernetes_Image_update:
     name: K8 Image update
     runs-on: ubuntu-latest
@@ -272,7 +273,7 @@ jobs:
         run: |
           sed -i "s|image:.*|image: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}|" Kubernetes/deployment.yaml
 
-      - name: Commit and Push Updated Manifest
+      - name: Commit and Push Updated Manifest #every Git commit requires an author name and email baked into it, as every runnet is new vm, we need to configure username and vm.
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
