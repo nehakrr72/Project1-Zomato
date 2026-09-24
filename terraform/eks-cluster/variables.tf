@@ -1,13 +1,13 @@
 variable "aws_region" {
   description = "AWS region to deploy all resources"
   type        = string
-  default     = "ap-south-1"
+  default     = "ca-central-1"
 }
 
 variable "project_name" {
   description = "Project name used as a prefix for all resources"
   type        = string
-  default     = "raham"
+  default     = "zomato"
 }
 
 # ───────────────────────────────
@@ -16,7 +16,7 @@ variable "project_name" {
 variable "bastion_ami_id" {
   description = "Ubuntu 22.04 LTS AMI ID for the bastion/admin host (region-specific, update if changing region)"
   type        = string
-  default     = "ami-0e35ddab05955cf57" # Ubuntu 22.04 LTS - ap-south-1 (Mumbai)
+  default     = "ami-00e86eed01378028d"
 }
 
 variable "bastion_instance_type" {
@@ -55,7 +55,7 @@ variable "vpc_cidr" {
 variable "azs" {
   description = "Availability zones to spread the EKS cluster and subnets across"
   type        = list(string)
-  default     = ["ap-south-1a", "ap-south-1b", "ap-south-1c"]
+  default     = ["ca-central-1a", "ca-central-1b", "ca-central-1c"]
 }
 
 variable "public_subnet_cidrs" {
@@ -76,7 +76,7 @@ variable "private_subnet_cidrs" {
 variable "cluster_name" {
   description = "Name of the EKS cluster"
   type        = string
-  default     = "raham-cluster"
+  default     = "zomato-cluster"
 }
 
 variable "cluster_version" {
@@ -91,7 +91,7 @@ variable "cluster_version" {
 variable "nodegroup_name" {
   description = "Name of the EKS managed nodegroup"
   type        = string
-  default     = "raham-cluster-ng-1"
+  default     = "zomato-cluster-ng-1"
 }
 
 variable "node_instance_types" {
