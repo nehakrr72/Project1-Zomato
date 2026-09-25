@@ -8,15 +8,15 @@ aws_region   = "ca-central-1"
 project_name = "zomato"
 
 # Bastion / Admin host — Ubuntu, m7i-flex.large, 30 GB EBS (as requested)
-bastion_ami_id           = "ami-00e86eed01378028d" # Ubuntu 22.04 LTS - ca-central-1
-bastion_instance_type    = "m7i-flex.large"
+bastion_ami_id           = "ami-05a7e16e7acd72a7f" # Ubuntu 22.04 LTS - ca-central-1
+bastion_instance_type    = "c7i-flex.large"
 bastion_root_volume_size = 30
 key_pair_name            = "abcd"      # must already exist in your AWS account
 ssh_allowed_cidr         = "0.0.0.0/0" # restrict to your IP in production, e.g. "203.0.113.10/32"
 
 # Networking
 vpc_cidr             = "10.0.0.0/16"
-azs                  = ["ca-central-1a", "ca-central-1b", "ca-central-1c"]
+azs                  = ["ca-central-1a", "ca-central-1b", "ca-central-1d"]
 public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 private_subnet_cidrs = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
@@ -26,7 +26,7 @@ cluster_version = "1.32"
 
 # EKS Managed Nodegroup
 nodegroup_name      = "zomato-cluster-ng-1"
-node_instance_types = ["t3.medium"] # t3.micro is too small for EKS worker nodes
+node_instance_types = ["t3.small"] # t3.micro is too small for EKS worker nodes
 node_volume_size    = 20
 node_desired_size   = 2
 node_min_size       = 2

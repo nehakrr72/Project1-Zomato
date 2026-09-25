@@ -65,7 +65,9 @@ resource "aws_iam_role_policy" "bastion_eks_read" {
           "eks:DescribeCluster",
           "eks:ListClusters",
           "eks:DescribeNodegroup",
-          "eks:ListNodegroups"
+          "eks:ListNodegroups",
+          "eks:DescribeClusterVersions",
+          "cloudformation:ListStacks"
         ]
         Resource = "*"
       }

@@ -16,13 +16,13 @@ variable "project_name" {
 variable "bastion_ami_id" {
   description = "Ubuntu 22.04 LTS AMI ID for the bastion/admin host (region-specific, update if changing region)"
   type        = string
-  default     = "ami-00e86eed01378028d"
+  default     = "ami-05a7e16e7acd72a7f"
 }
 
 variable "bastion_instance_type" {
   description = "EC2 instance type for the bastion host"
   type        = string
-  default     = "m7i-flex.large"
+  default     = "c7i-flex.large"
 }
 
 variable "bastion_root_volume_size" {
@@ -55,7 +55,7 @@ variable "vpc_cidr" {
 variable "azs" {
   description = "Availability zones to spread the EKS cluster and subnets across"
   type        = list(string)
-  default     = ["ca-central-1a", "ca-central-1b", "ca-central-1c"]
+  default     = ["ca-central-1a", "ca-central-1b", "ca-central-1d"]
 }
 
 variable "public_subnet_cidrs" {
@@ -97,7 +97,7 @@ variable "nodegroup_name" {
 variable "node_instance_types" {
   description = "EC2 instance types for EKS worker nodes (t3.micro is too small for production EKS — using t3.medium)"
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["t3.small"]
 }
 
 variable "node_volume_size" {
