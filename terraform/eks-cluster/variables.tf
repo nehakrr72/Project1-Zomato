@@ -97,7 +97,7 @@ variable "nodegroup_name" {
 variable "node_instance_types" {
   description = "EC2 instance types for EKS worker nodes (t3.micro is too small for production EKS — using t3.medium)"
   type        = list(string)
-  default     = ["t3.small"]
+  default     = ["c7i-flex.large"]
 }
 
 variable "node_volume_size" {
