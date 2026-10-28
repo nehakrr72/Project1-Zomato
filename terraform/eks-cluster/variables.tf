@@ -11,7 +11,7 @@ variable "project_name" {
 }
 
 # ───────────────────────────────
-# Bastion / Admin EC2 instance vars
+# Bastion / Admin EC2 instance Vars
 # ───────────────────────────────
 variable "bastion_ami_id" {
   description = "Ubuntu 22.04 LTS AMI ID for the bastion/admin host (region-specific, update if changing region)"
